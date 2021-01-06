@@ -5,6 +5,8 @@ import morgan from 'morgan'
 import colors from 'colors'
 import connectDB from './config/db.js'
 
+import userRoutes from './routes/userRoutes.js'
+
 dotenv.config()
 connectDB()
 const app = express()
@@ -15,6 +17,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 app.use(express.json())
 app.use(cookieParser())
+
+app.use('/api/users', userRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`.yellow.bold)
