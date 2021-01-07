@@ -8,6 +8,7 @@ import connectDB from './config/db.js'
 import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
 
 import userRoutes from './routes/userRoutes.js'
+import productRoutes from './routes/productRoutes.js'
 
 dotenv.config()
 connectDB()
@@ -21,6 +22,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use('/api/users', userRoutes)
+app.use('/api/products', productRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

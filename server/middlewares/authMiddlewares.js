@@ -25,4 +25,11 @@ const auth = asyncHandler(async (req, res, next) => {
   }
 })
 
-export { auth }
+const admin = asyncHandler(async (req, res, next) => {
+  if (req.user.role === 0) {
+    throw new Error('You are not allowed, get out now!')
+  }
+  next()
+})
+
+export { auth, admin }
