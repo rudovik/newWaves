@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 import colors from 'colors'
 import connectDB from './config/db.js'
+import bodyParser from 'body-parser'
 
 import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
 
@@ -18,7 +19,8 @@ const PORT = process.env.PORT || 5000
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
-app.use(express.json())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 app.use('/api/users', userRoutes)
