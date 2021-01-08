@@ -2,14 +2,19 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Routes from './Routes'
 import './Resources/css/styles.css'
+import { Provider } from 'react-redux'
 
 import { BrowserRouter } from 'react-router-dom'
 
+import store from './store'
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )
