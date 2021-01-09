@@ -19,11 +19,12 @@ export const loginUser = (dataToSubmit) => async (dispatch) => {
       payload: data.loginSuccess,
     })
   } catch (error) {
+    console.log(error.response.data.message)
     dispatch({
       type: USER_LOGIN_FAIL,
       payload:
         error.response && error.response.data.message
-          ? error.response.data
+          ? error.response.data.message
           : error.message || error.request,
     })
   }
