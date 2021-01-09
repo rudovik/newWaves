@@ -89,7 +89,7 @@ const Login = () => {
 
         {(formError || error) && (
           <div className='error_label'>
-            {error ? error : 'Please check your data.'}
+            {error || 'Please check your data.'}
           </div>
         )}
         <button onClick={(event) => submitForm(event)}>Log In</button>

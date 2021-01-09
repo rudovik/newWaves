@@ -14,12 +14,7 @@ const registerUser = asyncHandler(async (req, res) => {
     lastname,
   })
 
-  if (user) {
-    res.status(200).json({ success: true })
-  } else {
-    res.status(400)
-    throw new Error('Invalid user data')
-  }
+  res.status(200).json({ registerSuccess: true })
 })
 
 // @description   Login a user
