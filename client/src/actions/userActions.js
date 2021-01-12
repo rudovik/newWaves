@@ -12,7 +12,7 @@ import {
   USER_REGISTER_FAIL,
   USER_AUTH_SUCCESS,
   USER_AUTH_FAIL,
-  // USER_AUTH_REQUEST,
+  USER_AUTH_REQUEST,
 } from '../constants/userConstants'
 
 export const loginUser = (dataToSubmit) => async (dispatch) => {
@@ -51,10 +51,10 @@ export const registerUser = (dataToSubmit) => async (dispatch) => {
 }
 
 export const authUser = () => async (dispatch) => {
-  // dispatch({
-  //   type: USER_AUTH_REQUEST,
-  // })
   try {
+    dispatch({
+      type: USER_AUTH_REQUEST,
+    })
     const { data } = await axios.get(`${USER_SERVER}/auth`)
 
     dispatch({

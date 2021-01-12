@@ -46,10 +46,6 @@ const getSortedProducts = asyncHandler(async (req, res) => {
   limit = parseInt(limit)
   ;(isNaN(limit) || limit > 10 || limit === 0) && (limit = 10)
 
-  console.log(limit)
-  console.log(order)
-  console.log(sortBy)
-
   const products = await Product.find({})
     .populate('brand')
     .populate('wood')

@@ -7,7 +7,7 @@ import {
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
   USER_REGISTER_FAIL_RESET,
-  // USER_AUTH_REQUEST,
+  USER_AUTH_REQUEST,
   USER_AUTH_SUCCESS,
   USER_AUTH_FAIL,
 } from '../constants/userConstants'
@@ -65,12 +65,12 @@ const userRegisterReducer = (
 }
 
 const userAuthReducer = (
-  state = { loading: true, error: null, user: null },
+  state = { loading: null, error: null, user: null },
   action
 ) => {
   switch (action.type) {
-    // case USER_AUTH_REQUEST:
-    //   return { ...state, loading: true }
+    case USER_AUTH_REQUEST:
+      return { ...state, loading: true }
     case USER_AUTH_SUCCESS:
       return {
         loading: false,

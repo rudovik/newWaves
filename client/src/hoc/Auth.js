@@ -13,7 +13,7 @@ export const Auth = (Component, reload, adminRoute = null) => {
 
     useEffect(() => {
       if (!user) {
-        dispatch(authUser())
+        !loading && dispatch(authUser())
       } else {
         !user.isAuth && reload === true && history.push('/register_login')
         user.isAuth && reload === false && history.push('/user/dashboard')
@@ -21,12 +21,12 @@ export const Auth = (Component, reload, adminRoute = null) => {
       }
     }, [user, loading, dispatch, history])
 
-    console.log(user)
-    console.log(Component)
-
     // if (reload === null) {
     //   return <Component {...props} />
     // }
+
+    console.log(user)
+    if (loading === null) return null
 
     return loading ||
       (!user.isAuth && reload === true) ||
