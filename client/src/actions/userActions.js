@@ -10,6 +10,9 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_AUTH_SUCCESS,
+  USER_AUTH_FAIL,
+  // USER_AUTH_REQUEST,
 } from '../constants/userConstants'
 
 export const loginUser = (dataToSubmit) => async (dispatch) => {
@@ -42,6 +45,25 @@ export const registerUser = (dataToSubmit) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
+      payload: getErrorPayload(error),
+    })
+  }
+}
+
+export const authUser = () => async (dispatch) => {
+  // dispatch({
+  //   type: USER_AUTH_REQUEST,
+  // })
+  try {
+    const { data } = await axios.get(`${USER_SERVER}/auth`)
+
+    dispatch({
+      type: USER_AUTH_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_AUTH_FAIL,
       payload: getErrorPayload(error),
     })
   }

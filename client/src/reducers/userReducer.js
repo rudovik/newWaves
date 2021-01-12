@@ -7,6 +7,9 @@ import {
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
   USER_REGISTER_FAIL_RESET,
+  // USER_AUTH_REQUEST,
+  USER_AUTH_SUCCESS,
+  USER_AUTH_FAIL,
 } from '../constants/userConstants'
 
 const userLoginReducer = (
@@ -49,7 +52,6 @@ const userRegisterReducer = (
         error: false,
       }
     case USER_REGISTER_FAIL:
-      console.log(action.payload)
       return {
         loading: false,
         registerSuccess: false,
@@ -62,4 +64,28 @@ const userRegisterReducer = (
   }
 }
 
-export { userLoginReducer, userRegisterReducer }
+const userAuthReducer = (
+  state = { loading: true, error: null, user: null },
+  action
+) => {
+  switch (action.type) {
+    // case USER_AUTH_REQUEST:
+    //   return { ...state, loading: true }
+    case USER_AUTH_SUCCESS:
+      return {
+        loading: false,
+        user: action.payload,
+        error: false,
+      }
+    case USER_AUTH_FAIL:
+      return {
+        loading: false,
+        user: {},
+        error: action.payload,
+      }
+    default:
+      return state
+  }
+}
+
+export { userLoginReducer, userRegisterReducer, userAuthReducer }

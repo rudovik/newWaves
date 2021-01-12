@@ -4,6 +4,7 @@ import Home from './components/Home/Home'
 import Layout from './hoc/Layout'
 import RegisterLogin from './components/RegisterLogin/RegisterLogin'
 import Register from './components/RegisterLogin/Register'
+import Auth from './hoc/Auth'
 
 import UserDashboard from './components/User/UserDashboard'
 
@@ -11,10 +12,18 @@ function Routes() {
   return (
     <Layout>
       <Switch>
-        <Route path='/user/dashboard' exact component={UserDashboard} />
-        <Route path='/register' exact component={Register} />
-        <Route path='/register_login' exact component={RegisterLogin} />
-        <Route path='/' exact component={Home} />
+        <Route
+          path='/user/dashboard'
+          exact
+          component={Auth(UserDashboard, true)}
+        />
+        <Route path='/register' exact component={Auth(Register, false)} />
+        <Route
+          path='/register_login'
+          exact
+          component={Auth(RegisterLogin, false)}
+        />
+        <Route path='/' exact component={Auth(Home, null)} />
       </Switch>
     </Layout>
   )
