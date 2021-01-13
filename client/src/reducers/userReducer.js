@@ -70,17 +70,21 @@ const userAuthReducer = (
 ) => {
   switch (action.type) {
     case USER_AUTH_REQUEST:
-      return { ...state, loading: true }
+      return {
+        ...state,
+        loading: true,
+      }
     case USER_AUTH_SUCCESS:
       return {
+        ...state,
         loading: false,
         user: action.payload,
         error: false,
       }
     case USER_AUTH_FAIL:
       return {
+        ...state,
         loading: false,
-        user: {},
         error: action.payload,
       }
     default:

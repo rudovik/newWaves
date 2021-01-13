@@ -8,30 +8,31 @@ export const Auth = (Component, reload, adminRoute = null) => {
   const ComponentFunc = (props) => {
     const history = useHistory()
     const dispatch = useDispatch()
-    const userData = useSelector((state) => state.userAuth)
-    const { loading, user } = userData
+
+    const loading = useSelector((state) => state.userAuth.loading)
+    const user = useSelector((state) => state.userAuth.user)
+    const error = useSelector((state) => state.userAuth.error)
+    const loginSuccess = useSelector((state) => state.userLogin.loginSuccess)
 
     useEffect(() => {
       if (!user) {
-        !loading && dispatch(authUser())
+        dispatch(authUser())
       } else {
-        !user.isAuth && reload === true && history.push('/register_login')
-        user.isAuth && reload === false && history.push('/user/dashboard')
         adminRoute && !user.isAdmin && history.push('/user/dashboard')
+        user && reload === false && history.push('/user/dashboard')
       }
-    }, [user, loading, dispatch, history])
+    }, [user, dispatch, history])
 
-    // if (reload === null) {
-    //   return <Component {...props} />
-    // }
+    useEffect(() => {
+      error && !loginSuccess && reload && history.push('/register_login')
+    }, [error, history, loginSuccess, dispatch])
 
-    console.log(user)
     if (loading === null) return null
 
     return loading ||
-      (!user.isAuth && reload === true) ||
-      (user.isAuth && reload === false) ||
-      (adminRoute && !user.isAdmin) ? (
+      (!user && reload === true) ||
+      (user && reload === false) ||
+      (adminRoute && user && !user.isAdmin) ? (
       <div className='main_loader'>
         <CircularProgress style={{ color: '#2196F3' }} thickness={7} />
       </div>
