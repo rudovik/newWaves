@@ -11,7 +11,6 @@ import {
   USER_AUTH_SUCCESS,
   USER_AUTH_FAIL,
   USER_LOGOUT_SUCCESS,
-  USER_LOGIN_LOADING_RESET,
   USER_LOGOUT_REQUEST,
 } from '../constants/userConstants'
 
@@ -66,9 +65,6 @@ const userLoginReducer = (
         loginError: false,
         loading: false,
       }
-    case USER_LOGIN_LOADING_RESET:
-      return { ...state, loading: null }
-
     default:
       return state
   }

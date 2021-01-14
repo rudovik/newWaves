@@ -16,7 +16,6 @@ import {
   USER_LOGOUT_REQUEST,
   USER_LOGOUT_SUCCESS,
   USER_LOGOUT_FAIL,
-  USER_LOGIN_LOADING_RESET,
 } from '../constants/userConstants'
 
 export const loginUser = (dataToSubmit) => async (dispatch) => {
@@ -96,9 +95,3 @@ export const logoutUser = () => async (dispatch) => {
 export const userLoginFailReset = () => ({ type: USER_LOGIN_FAIL_RESET })
 
 export const userRegisterFailReset = () => ({ type: USER_REGISTER_FAIL_RESET })
-
-export const setLoginLoadingToNull = () => async (dispatch) => {
-  dispatch({
-    type: USER_LOGIN_LOADING_RESET,
-  })
-}
