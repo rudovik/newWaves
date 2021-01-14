@@ -45,7 +45,7 @@ const Login = () => {
   const [formError, setFormError] = useState(false)
 
   const userLogin = useSelector((state) => state.userLogin)
-  const { /*loading,*/ loginSuccess, error } = userLogin
+  const { /*loading,*/ loginSuccess, loginError } = userLogin
   const dispatch = useDispatch()
 
   const submitForm = (event) => {
@@ -64,7 +64,7 @@ const Login = () => {
     const newFormData = update(element, state.formData, 'login')
     setState({ ...state, formData: newFormData })
     setFormError(false)
-    error && dispatch(userLoginFailReset())
+    loginError && dispatch(userLoginFailReset())
   }
 
   const history = useHistory()
@@ -87,9 +87,9 @@ const Login = () => {
           change={(element) => updateForm(element)}
         />
 
-        {(formError || error) && (
+        {(formError || loginError) && (
           <div className='error_label'>
-            {error || 'Please check your data.'}
+            {loginError || 'Please check your data.'}
           </div>
         )}
         <button onClick={(event) => submitForm(event)}>Log In</button>

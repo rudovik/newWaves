@@ -13,6 +13,10 @@ import {
   USER_AUTH_SUCCESS,
   USER_AUTH_FAIL,
   USER_AUTH_REQUEST,
+  USER_LOGOUT_REQUEST,
+  USER_LOGOUT_SUCCESS,
+  USER_LOGOUT_FAIL,
+  USER_LOGIN_LOADING_RESET,
 } from '../constants/userConstants'
 
 export const loginUser = (dataToSubmit) => async (dispatch) => {
@@ -23,7 +27,7 @@ export const loginUser = (dataToSubmit) => async (dispatch) => {
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
-      payload: data.loginSuccess,
+      payload: data,
     })
   } catch (error) {
     dispatch({
@@ -52,22 +56,49 @@ export const registerUser = (dataToSubmit) => async (dispatch) => {
 
 export const authUser = () => async (dispatch) => {
   try {
-    dispatch({
+    await dispatch({
       type: USER_AUTH_REQUEST,
     })
     const { data } = await axios.get(`${USER_SERVER}/auth`)
 
-    dispatch({
+    await dispatch({
       type: USER_AUTH_SUCCESS,
       payload: data,
     })
   } catch (error) {
-    dispatch({
+    await dispatch({
       type: USER_AUTH_FAIL,
       payload: getErrorPayload(error),
     })
   }
 }
 
+export const logoutUser = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_LOGOUT_REQUEST,
+    })
+
+    const { data } = await axios.get(`${USER_SERVER}/logout`)
+
+    dispatch({
+      type: USER_LOGOUT_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_LOGOUT_FAIL,
+      payload: getErrorPayload(error),
+    })
+  }
+}
+
 export const userLoginFailReset = () => ({ type: USER_LOGIN_FAIL_RESET })
+
 export const userRegisterFailReset = () => ({ type: USER_REGISTER_FAIL_RESET })
+
+export const setLoginLoadingToNull = () => async (dispatch) => {
+  dispatch({
+    type: USER_LOGIN_LOADING_RESET,
+  })
+}

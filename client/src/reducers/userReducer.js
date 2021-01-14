@@ -10,29 +10,65 @@ import {
   USER_AUTH_REQUEST,
   USER_AUTH_SUCCESS,
   USER_AUTH_FAIL,
+  USER_LOGOUT_SUCCESS,
+  USER_LOGIN_LOADING_RESET,
+  USER_LOGOUT_REQUEST,
 } from '../constants/userConstants'
 
 const userLoginReducer = (
-  state = { loading: null, error: null, loginSuccess: null },
+  state = {
+    loading: null,
+    loginError: null,
+    loginSuccess: null,
+    user: null,
+    authError: null,
+  },
   action
 ) => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:
+    case USER_AUTH_REQUEST:
+    case USER_LOGOUT_REQUEST:
       return { ...state, loading: true }
     case USER_LOGIN_SUCCESS:
+    case USER_AUTH_SUCCESS:
+      const { user, loginSuccess } = action.payload
       return {
+        ...state,
         loading: false,
-        loginSuccess: action.payload,
-        error: false,
+        loginSuccess,
+        user,
+        authError: false,
+        loginError: false,
+      }
+    case USER_AUTH_FAIL:
+      return {
+        ...state,
+        loading: false,
+        loginSuccess: false,
+        authError: action.payload,
       }
     case USER_LOGIN_FAIL:
       return {
+        ...state,
         loading: false,
         loginSuccess: false,
-        error: action.payload,
+        loginError: action.payload,
       }
     case USER_LOGIN_FAIL_RESET:
-      return { ...state, error: false }
+      return { ...state, loginError: false }
+    case USER_LOGOUT_SUCCESS:
+      return {
+        ...state,
+        user: false,
+        loginSuccess: false,
+        authError: false,
+        loginError: false,
+        loading: false,
+      }
+    case USER_LOGIN_LOADING_RESET:
+      return { ...state, loading: null }
+
     default:
       return state
   }
@@ -64,32 +100,4 @@ const userRegisterReducer = (
   }
 }
 
-const userAuthReducer = (
-  state = { loading: null, error: null, user: null },
-  action
-) => {
-  switch (action.type) {
-    case USER_AUTH_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      }
-    case USER_AUTH_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        user: action.payload,
-        error: false,
-      }
-    case USER_AUTH_FAIL:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      }
-    default:
-      return state
-  }
-}
-
-export { userLoginReducer, userRegisterReducer, userAuthReducer }
+export { userLoginReducer, userRegisterReducer }

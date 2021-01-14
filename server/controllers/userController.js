@@ -26,9 +26,20 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (user && (await user.matchPassword(password))) {
     await user.generateToken(user._id)
-    res.cookie('w_auth', user.token).status(200).json({
-      loginSuccess: true,
-    })
+    res
+      .cookie('w_auth', user.token)
+      .status(200)
+      .json({
+        loginSuccess: true,
+        user: {
+          isAdmin: user.role === 0 ? false : true,
+          email: user.email,
+          name: user.name,
+          lastname: user.lastname,
+          cart: user.cart,
+          history: user.history,
+        },
+      })
   } else {
     res.status(401)
     throw new Error('Invalid email or password')
@@ -55,13 +66,15 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @access        Private
 const authUser = asyncHandler(async (req, res) => {
   res.status(200).json({
-    isAdmin: req.user.role === 0 ? false : true,
-    isAuth: true,
-    email: req.user.email,
-    name: req.user.name,
-    lastname: req.user.lastname,
-    cart: req.user.cart,
-    history: req.user.history,
+    user: {
+      isAdmin: req.user.role === 0 ? false : true,
+      isAuth: true,
+      email: req.user.email,
+      name: req.user.name,
+      lastname: req.user.lastname,
+      cart: req.user.cart,
+      history: req.user.history,
+    },
   })
 })
 

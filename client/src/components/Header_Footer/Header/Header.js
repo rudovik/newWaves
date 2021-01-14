@@ -1,7 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+
+import { logoutUser } from '../../../actions/userActions'
 
 const links = {
   page: [
@@ -21,6 +23,7 @@ const links = {
       name: 'My Cart',
       linkTo: '/user/cart',
       public: false,
+      cartLink: true,
     },
     {
       name: 'My Account',
@@ -37,17 +40,37 @@ const links = {
       name: 'Log out',
       linkTo: '/user/logout',
       public: false,
+      logoutLink: true,
     },
   ],
 }
 
-const defaultLink = (item, i) => (
-  <Link to={item.linkTo} key={i}>
-    {item.name}
-  </Link>
-)
+const defaultLink = (item, i, dispatch) =>
+  item.logoutLink ? (
+    <div
+      className='log_out_link'
+      key={i}
+      onClick={() => {
+        dispatch(logoutUser())
+      }}
+    >
+      {item.name}
+    </div>
+  ) : (
+    <Link to={item.linkTo} key={i}>
+      {item.name}
+    </Link>
+  )
+const cartLink = (item, i, user) => {
+  return (
+    <div className='cart_link' key={i}>
+      <span>{user.cart ? user.cart.length : 0}</span>
+      <Link to={item.linkTo}>{item.name}</Link>
+    </div>
+  )
+}
 
-const showLinks = (type, user) => {
+const showLinks = (type, user, dispatch) => {
   const list = []
 
   type.forEach((item) => {
@@ -58,15 +81,19 @@ const showLinks = (type, user) => {
     }
   })
 
-  const linksToReturn = list.map((item, i) => {
-    return defaultLink(item, i)
+  return list.map((item, i) => {
+    if (!item.cartLink) {
+      return defaultLink(item, i, dispatch)
+    } else {
+      return cartLink(item, i, user)
+    }
   })
-
-  return linksToReturn
 }
 
 const Header = () => {
-  const user = useSelector((state) => state.userAuth.user)
+  const user = useSelector((state) => state.userLogin.user)
+
+  const dispatch = useDispatch()
 
   return (
     <header className='bck_b_light'>
@@ -75,8 +102,8 @@ const Header = () => {
           <div className='logo'>WAVES</div>
         </div>
         <div className='right'>
-          <div className='top'>{showLinks(links.user, user)}</div>
-          <div className='bottom'>{showLinks(links.page, user)}</div>
+          <div className='top'>{showLinks(links.user, user, dispatch)}</div>
+          <div className='bottom'>{showLinks(links.page, user, dispatch)}</div>
         </div>
       </div>
     </header>
