@@ -35,6 +35,12 @@ const getProductsByIds = asyncHandler(async (req, res) => {
   })
 })
 
+// BY ARRIVAL
+// /articles?sortBy=createdAt&order=desc&limit=4
+
+// BY SELL
+// /articles?sortBy=sold&order=desc&limit=100
+
 const getSortedProducts = asyncHandler(async (req, res) => {
   const orderOptions = { asc: true, desc: true }
   const sortByOptions = { sold: true, createdAt: true, _id: true }
