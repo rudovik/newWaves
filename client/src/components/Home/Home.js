@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import HomeSlider from './HomeSlider'
 import HomePromotion from './HomePromotion'
+import CardBlock from '../utils/CardBlock'
+
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getProductsBySell,
@@ -22,7 +24,13 @@ const Home = () => {
   return (
     <div>
       <HomeSlider />
+      {productsBySell && (
+        <CardBlock list={productsBySell} title='Best selling guitars' />
+      )}
       <HomePromotion />
+      {productsByArrival && (
+        <CardBlock list={productsByArrival} title='New arrivals' />
+      )}
     </div>
   )
 }
