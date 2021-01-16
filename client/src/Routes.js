@@ -5,6 +5,7 @@ import Layout from './hoc/Layout'
 import RegisterLogin from './components/RegisterLogin/RegisterLogin'
 import Register from './components/RegisterLogin/Register'
 import Auth from './hoc/Auth'
+import Shop from './components/Shop/Shop'
 
 import UserDashboard from './components/User/UserDashboard'
 
@@ -23,6 +24,7 @@ function Routes() {
           exact
           component={Auth(RegisterLogin, false)}
         />
+        <Route path='/shop' exact component={Auth(Shop, null)} />
         <Route path='/' exact component={Auth(Home, null)} />
       </Switch>
     </Layout>

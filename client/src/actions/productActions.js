@@ -5,6 +5,10 @@ import {
   GET_PRODUCTS_BY_SELL_FAIL,
   GET_PRODUCTS_BY_ARRIVAL_SUCCESS,
   GET_PRODUCTS_BY_ARRIVAL_FAIL,
+  GET_BRANDS_SUCCESS,
+  GET_BRANDS_FAIL,
+  GET_WOODS_SUCCESS,
+  GET_WOODS_FAIL,
 } from '../constants/productConstants'
 
 export const getProductsBySell = () => async (dispatch) => {
@@ -42,6 +46,36 @@ export const getProductsByArrival = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_PRODUCTS_BY_ARRIVAL_FAIL,
+      payload: getErrorPayload(error),
+    })
+  }
+}
+
+export const getBrands = () => async (dispatch) => {
+  try {
+    const { data } = await axios.get(`${PRODUCT_SERVER}/brands`)
+    dispatch({
+      type: GET_BRANDS_SUCCESS,
+      payload: data.brands,
+    })
+  } catch (error) {
+    dispatch({
+      type: GET_BRANDS_FAIL,
+      payload: getErrorPayload(error),
+    })
+  }
+}
+
+export const getWoods = () => async (dispatch) => {
+  try {
+    const { data } = await axios.get(`${PRODUCT_SERVER}/woods`)
+    dispatch({
+      type: GET_WOODS_SUCCESS,
+      payload: data.woods,
+    })
+  } catch (error) {
+    dispatch({
+      type: GET_WOODS_FAIL,
       payload: getErrorPayload(error),
     })
   }
