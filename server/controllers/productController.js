@@ -64,4 +64,37 @@ const getSortedProducts = asyncHandler(async (req, res) => {
   })
 })
 
-export { addProduct, getProductsByIds, getSortedProducts }
+const getProductsToShop = asyncHandler(async (req, res) => {
+  const order = req.body.order || 'desc'
+  const sortBy = req.body.sortBy || '_id'
+  const limit = req.body.limit || 100
+  const skip = parseInt(req.body.skip) || 0
+  const findArgs = {}
+  for (let key in req.body.filters) {
+    if (req.body.filters[key].length > 0) {
+      if (key === 'price') {
+        findArgs[key] = {
+          $gte: req.body.filters[key][0],
+          $lte: req.body.filters[key][1],
+        }
+      } else {
+        findArgs[key] = req.body.filters[key]
+      }
+    }
+  }
+
+  const products = await Product.find(findArgs)
+    .populate('brand')
+    .populate('wood')
+    .sort([[sortBy, order]])
+    .skip(skip)
+    .limit(limit)
+    .exec()
+
+  res.status(200).json({
+    size: products.length,
+    articles: products,
+  })
+})
+
+export { addProduct, getProductsByIds, getSortedProducts, getProductsToShop }

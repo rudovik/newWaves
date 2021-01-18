@@ -7,6 +7,7 @@ import {
   addProduct,
   getProductsByIds,
   getSortedProducts,
+  getProductsToShop,
 } from '../controllers/productController.js'
 
 router.post('/wood', auth, admin, addWood)
@@ -16,5 +17,6 @@ router.get('/articles', getSortedProducts)
 router.get('/woods', getWoods)
 router.post('/brand', auth, admin, addBrand)
 router.get('/brands', getBrands)
+router.post('/shop', getProductsToShop)
 
 export default router

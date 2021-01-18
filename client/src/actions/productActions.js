@@ -9,6 +9,8 @@ import {
   GET_BRANDS_FAIL,
   GET_WOODS_SUCCESS,
   GET_WOODS_FAIL,
+  GET_PRODUCTS_TO_SHOP_SUCCESS,
+  GET_PRODUCTS_TO_SHOP_FAIL,
 } from '../constants/productConstants'
 
 export const getProductsBySell = () => async (dispatch) => {
@@ -76,6 +78,24 @@ export const getWoods = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_WOODS_FAIL,
+      payload: getErrorPayload(error),
+    })
+  }
+}
+
+export const getProductsToShop = (skip, limit, filters) => async (dispatch) => {
+  try {
+    const params = { limit, skip, filters }
+
+    const { data } = await axios.post(`${PRODUCT_SERVER}/shop`, params)
+
+    dispatch({
+      type: GET_PRODUCTS_TO_SHOP_SUCCESS,
+      payload: { size: data.size, articles: data.articles },
+    })
+  } catch (error) {
+    dispatch({
+      type: GET_PRODUCTS_TO_SHOP_FAIL,
       payload: getErrorPayload(error),
     })
   }

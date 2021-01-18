@@ -3,6 +3,7 @@ import {
   GET_PRODUCTS_BY_ARRIVAL_SUCCESS,
   GET_BRANDS_SUCCESS,
   GET_WOODS_SUCCESS,
+  GET_PRODUCTS_TO_SHOP_SUCCESS,
 } from '../constants/productConstants'
 
 export const productsReducer = (state = {}, action) => {
@@ -15,6 +16,12 @@ export const productsReducer = (state = {}, action) => {
       return { ...state, brands: action.payload }
     case GET_WOODS_SUCCESS:
       return { ...state, woods: action.payload }
+    case GET_PRODUCTS_TO_SHOP_SUCCESS:
+      return {
+        ...state,
+        toShop: action.payload.articles,
+        toShopSize: action.payload.size,
+      }
     default:
       return state
   }

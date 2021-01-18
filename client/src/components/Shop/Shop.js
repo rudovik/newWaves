@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import PageTop from '../utils/PageTop'
 import { useSelector, useDispatch } from 'react-redux'
-import { getBrands, getWoods } from '../../actions/productActions'
+import {
+  getBrands,
+  getWoods,
+  getProductsToShop,
+} from '../../actions/productActions'
 import CollapseCheckbox from '../utils/CollapseCheckbox'
 import CollapseRadio from '../utils/CollapseRadio'
 import { frets, price } from '../utils/Form/fixed_categories'
@@ -50,13 +54,17 @@ const Shop = () => {
       newFilters[category] = filtersArr
     }
 
-    setState({ ...state, filters: newFilters })
+    // dispatch(getProductsToShop(0, state.limit, filters))
+    setState({ ...state, filters: newFilters, skip: 0 })
   }
 
   useEffect(() => {
     !brands && dispatch(getBrands())
     brands && !woods && dispatch(getWoods())
-  })
+    brands &&
+      woods &&
+      dispatch(getProductsToShop(state.skip, state.limit, state.filters))
+  }, [brands, woods, state.filters, dispatch, state.limit, state.skip])
 
   return (
     <div>
