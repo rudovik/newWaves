@@ -83,15 +83,22 @@ export const getWoods = () => async (dispatch) => {
   }
 }
 
-export const getProductsToShop = (skip, limit, filters) => async (dispatch) => {
+export const getProductsToShop = (
+  skip,
+  limit,
+  filters,
+  previousState = []
+) => async (dispatch) => {
   try {
     const params = { limit, skip, filters }
 
     const { data } = await axios.post(`${PRODUCT_SERVER}/shop`, params)
 
+    const newState = [...previousState, ...data.articles]
+
     dispatch({
       type: GET_PRODUCTS_TO_SHOP_SUCCESS,
-      payload: { size: data.size, articles: data.articles },
+      payload: { size: data.size, articles: newState },
     })
   } catch (error) {
     dispatch({

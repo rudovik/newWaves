@@ -24,7 +24,11 @@ const Card = (props) => {
           <div className='name'>{props.name}</div>
           <div className='price'>${props.price}</div>
         </div>
-        {props.grid && <div className='description'>fdsfadafdsfdadfadsadf</div>}
+        {props.grid && (
+          <div className='description'>
+            <p>{props.description}</p>
+          </div>
+        )}
         <div className='actions'>
           <div className='button_wrapp'>
             <MyButton

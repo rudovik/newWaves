@@ -83,6 +83,8 @@ const getProductsToShop = asyncHandler(async (req, res) => {
     }
   }
 
+  findArgs['publish'] = true
+
   const products = await Product.find(findArgs)
     .populate('brand')
     .populate('wood')

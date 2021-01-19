@@ -10,9 +10,16 @@ import CollapseCheckbox from '../utils/CollapseCheckbox'
 import CollapseRadio from '../utils/CollapseRadio'
 import { frets, price } from '../utils/Form/fixed_categories'
 
+import LoadMoreCards from './LoadMoreCards'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faTh } from '@fortawesome/free-solid-svg-icons'
+
 const Shop = () => {
   const brands = useSelector((state) => state.products.brands)
   const woods = useSelector((state) => state.products.woods)
+  const toShop = useSelector((state) => state.products.toShop)
+  const toShopSize = useSelector((state) => state.products.toShopSize)
   const dispatch = useDispatch()
 
   const [state, setState] = useState({
@@ -54,7 +61,7 @@ const Shop = () => {
       newFilters[category] = filtersArr
     }
 
-    // dispatch(getProductsToShop(0, state.limit, filters))
+    dispatch(getProductsToShop(0, state.limit, newFilters))
     setState({ ...state, filters: newFilters, skip: 0 })
   }
 
@@ -63,8 +70,21 @@ const Shop = () => {
     brands && !woods && dispatch(getWoods())
     brands &&
       woods &&
-      dispatch(getProductsToShop(state.skip, state.limit, state.filters))
-  }, [brands, woods, state.filters, dispatch, state.limit, state.skip])
+      !toShop &&
+      dispatch(
+        getProductsToShop(state.skip, state.limit, state.filters, toShop)
+      )
+  })
+
+  const loadMoreCards = () => {
+    let skip = state.skip + state.limit
+    dispatch(getProductsToShop(skip, state.limit, state.filters, toShop))
+    setState({ ...state, skip })
+  }
+
+  const handleGrid = () => {
+    setState({ ...state, grid: !state.grid ? 'grid_bars' : '' })
+  }
 
   return (
     <div>
@@ -97,7 +117,33 @@ const Shop = () => {
               handleFilters={(filters) => handleFilters(filters, 'price')}
             />
           </div>
-          <div className='right'>right</div>
+          <div className='right'>
+            <div className='shop_options'>
+              <div className='shop_grids clear'>
+                <div
+                  className={`grid_btn ${state.grid ? '' : 'active'}`}
+                  onClick={() => handleGrid()}
+                >
+                  <FontAwesomeIcon icon={faTh} />
+                </div>
+                <div
+                  className={`grid_btn ${!state.grid ? '' : 'active'}`}
+                  onClick={() => handleGrid()}
+                >
+                  <FontAwesomeIcon icon={faBars} />
+                </div>
+              </div>
+            </div>
+            <div>
+              <LoadMoreCards
+                grid={state.grid}
+                limit={state.limit}
+                size={toShopSize}
+                products={toShop}
+                loadMore={loadMoreCards}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
