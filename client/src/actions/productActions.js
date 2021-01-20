@@ -11,6 +11,8 @@ import {
   GET_WOODS_FAIL,
   GET_PRODUCTS_TO_SHOP_SUCCESS,
   GET_PRODUCTS_TO_SHOP_FAIL,
+  ADD_PRODUCT_SUCCESS,
+  CLEAR_PRODUCT,
 } from '../constants/productConstants'
 
 export const getProductsBySell = () => async (dispatch) => {
@@ -106,4 +108,22 @@ export const getProductsToShop = (
       payload: getErrorPayload(error),
     })
   }
+}
+
+export const addProduct = (dataToSubmit) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(`${PRODUCT_SERVER}/article`, dataToSubmit)
+
+    dispatch({
+      type: ADD_PRODUCT_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {}
+}
+
+export const clearProduct = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_PRODUCT,
+    payload: null,
+  })
 }

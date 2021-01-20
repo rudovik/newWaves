@@ -4,6 +4,8 @@ import {
   GET_BRANDS_SUCCESS,
   GET_WOODS_SUCCESS,
   GET_PRODUCTS_TO_SHOP_SUCCESS,
+  ADD_PRODUCT_SUCCESS,
+  CLEAR_PRODUCT,
 } from '../constants/productConstants'
 
 export const productsReducer = (state = {}, action) => {
@@ -22,6 +24,12 @@ export const productsReducer = (state = {}, action) => {
         toShop: action.payload.articles,
         toShopSize: action.payload.size,
       }
+    case ADD_PRODUCT_SUCCESS:
+      return { ...state, addProduct: action.payload }
+
+    case CLEAR_PRODUCT:
+      return { ...state, addProduct: action.payload }
+
     default:
       return state
   }

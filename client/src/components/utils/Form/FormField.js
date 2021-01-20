@@ -17,7 +17,48 @@ const renderTemplate = ({ fieldData, change, id }) => {
     case 'input':
       fieldTemplate = (
         <div className='formBlock'>
+          {fieldData.showLabel && (
+            <div className='label_inputs'>{fieldData.config.label}</div>
+          )}
           <input
+            {...fieldData.config}
+            value={fieldData.value}
+            onBlur={(event) => change({ event, id, blur: true })}
+            onChange={(event) => change({ event, id })}
+          />
+          {showError(fieldData)}
+        </div>
+      )
+      break
+    case 'select':
+      fieldTemplate = (
+        <div className='formBlock'>
+          {fieldData.showLabel && (
+            <div className='label_inputs'>{fieldData.config.label}</div>
+          )}
+          <select
+            value={fieldData.value}
+            onBlur={(event) => change({ event, id, blur: true })}
+            onChange={(event) => change({ event, id })}
+          >
+            <option value=''>Select one</option>
+            {fieldData.config.options.map((item) => (
+              <option key={item.key} value={item.key}>
+                {item.value}
+              </option>
+            ))}
+          </select>
+          {showError(fieldData)}
+        </div>
+      )
+      break
+    case 'textarea':
+      fieldTemplate = (
+        <div className='formBlock'>
+          {fieldData.showLabel && (
+            <div className='label_inputs'>{fieldData.config.label}</div>
+          )}
+          <textarea
             {...fieldData.config}
             value={fieldData.value}
             onBlur={(event) => change({ event, id, blur: true })}

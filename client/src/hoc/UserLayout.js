@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const links = [
   {
@@ -16,6 +17,21 @@ const links = [
   },
 ]
 
+const admin = [
+  {
+    name: 'Site info',
+    linkTo: '/admin/site_info',
+  },
+  {
+    name: 'Add product',
+    linkTo: '/admin/add_product',
+  },
+  {
+    name: 'Manage categories',
+    linkTo: '/admin/manage_categories',
+  },
+]
+
 const generateLinks = (links) =>
   links.map((item, i) => (
     <Link to={item.linkTo} key={i}>
@@ -24,12 +40,20 @@ const generateLinks = (links) =>
   ))
 
 const UserLayout = ({ children }) => {
+  const user = useSelector((state) => state.userLogin.user)
+
   return (
     <div className='container'>
       <div className='user_container'>
         <div className='user_left_nav'>
           <h2>My account</h2>
           <div className='links'>{generateLinks(links)}</div>
+          {user.isAdmin && (
+            <div>
+              <h2>Admin</h2>
+              <div className='links'>{generateLinks(admin)}</div>
+            </div>
+          )}
         </div>
         <div className='user_right'>{children}</div>
       </div>
