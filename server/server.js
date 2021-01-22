@@ -1,10 +1,11 @@
+import dotenv from 'dotenv'
 import express from 'express'
 import cookieParser from 'cookie-parser'
-import dotenv from 'dotenv'
 import morgan from 'morgan'
 import colors from 'colors'
 import connectDB from './config/db.js'
 import bodyParser from 'body-parser'
+import { v2 as cloudinary } from 'cloudinary'
 
 import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
 
@@ -13,6 +14,12 @@ import productRoutes from './routes/productRoutes.js'
 
 dotenv.config()
 connectDB()
+cloudinary.config({
+  cloud_name: `${process.env.CLOUD_NAME}`,
+  api_key: `${process.env.CLOUD_API_KEY}`,
+  api_secret: `${process.env.CLOUD_API_SECRET}`,
+})
+
 const app = express()
 const PORT = process.env.PORT || 5000
 

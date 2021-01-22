@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
+import { v2 as cloudinary } from 'cloudinary'
 
 // @description   Register a new user
 // @route         POST /api/users/register
@@ -78,4 +79,29 @@ const authUser = asyncHandler(async (req, res) => {
   })
 })
 
-export { registerUser, loginUser, authUser, logoutUser }
+const uploadToCloudinary = asyncHandler(async (req, res) => {
+  const { public_id, url } = await cloudinary.uploader.upload(
+    req.files.file.path,
+    { public_id: `${Date.now()}`, resource_type: 'auto' }
+  )
+
+  res.status(200).send({
+    public_id,
+    url,
+  })
+})
+
+const deleteFromCloudinary = asyncHandler(async (req, res) => {
+  const image_id = req.query.public_id
+  const response = await cloudinary.uploader.destroy(image_id)
+  res.status(200).send('ok')
+})
+
+export {
+  registerUser,
+  loginUser,
+  authUser,
+  logoutUser,
+  uploadToCloudinary,
+  deleteFromCloudinary,
+}

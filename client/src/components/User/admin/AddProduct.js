@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import UserLayout from '../../../hoc/UserLayout'
 import FormField from '../../utils/Form/FormField'
 import {
@@ -8,6 +8,7 @@ import {
   populateOptionFields,
   resetFields,
 } from '../../utils/Form/formActions'
+import FileUpload from '../../utils/FileUpload'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
@@ -188,6 +189,16 @@ const AddProduct = () => {
         validationMessage: '',
         showLabel: true,
       },
+      images: {
+        value: [],
+        validation: {
+          required: false,
+        },
+        valid: true,
+        touched: false,
+        validationMessage: '',
+        showLabel: false,
+      },
     },
   })
 
@@ -237,11 +248,26 @@ const AddProduct = () => {
     // error && dispatch(userRegisterFailReset())
   }
 
+  const imagesHandler = useCallback(
+    (images) => {
+      const newFormData = {
+        ...state.formData,
+      }
+      newFormData['images'].value = images
+      newFormData['images'].valid = true
+
+      setState((state) => ({ ...state, formData: newFormData }))
+    },
+    [state.formData]
+  )
+
   return (
     <UserLayout>
       <div>
         <h1>Add product</h1>
         <form onSubmit={(event) => submitForm(event)}>
+          <FileUpload imagesHandler={imagesHandler} reset={state.formSuccess} />
+
           <FormField
             id={'name'}
             fieldData={state.formData.name}
