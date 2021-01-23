@@ -6,6 +6,7 @@ import {
   GET_PRODUCTS_BY_ARRIVAL_SUCCESS,
   GET_PRODUCTS_BY_ARRIVAL_FAIL,
   GET_BRANDS_SUCCESS,
+  ADD_BRAND_SUCCESS,
   GET_BRANDS_FAIL,
   GET_WOODS_SUCCESS,
   GET_WOODS_FAIL,
@@ -13,6 +14,7 @@ import {
   GET_PRODUCTS_TO_SHOP_FAIL,
   ADD_PRODUCT_SUCCESS,
   CLEAR_PRODUCT,
+  ADD_WOOD_SUCCESS,
 } from '../constants/productConstants'
 
 export const getProductsBySell = () => async (dispatch) => {
@@ -126,4 +128,32 @@ export const clearProduct = () => async (dispatch) => {
     type: CLEAR_PRODUCT,
     payload: null,
   })
+}
+
+export const addBrand = (dataToSubmit, existingBrands) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(`${PRODUCT_SERVER}/brand`, dataToSubmit)
+
+    dispatch({
+      type: ADD_BRAND_SUCCESS,
+      payload: {
+        brands: [...existingBrands, data.brand],
+        success: data.success,
+      },
+    })
+  } catch (error) {}
+}
+
+export const addWood = (dataToSubmit, existingWoods) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(`${PRODUCT_SERVER}/wood`, dataToSubmit)
+
+    dispatch({
+      type: ADD_WOOD_SUCCESS,
+      payload: {
+        woods: [...existingWoods, data.wood],
+        success: data.success,
+      },
+    })
+  } catch (error) {}
 }
