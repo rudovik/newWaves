@@ -5,8 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTruck } from '@fortawesome/free-solid-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+// import { addToCart } from '../../actions/userActions'
 
-const showProdTags = ({ shipping, available }) => (
+const showProdTags = ({ shipping, available, addToCart }) => (
   <div className='product_tags'>
     {shipping && (
       <div className='tag'>
@@ -44,14 +45,14 @@ const showProdTags = ({ shipping, available }) => (
   </div>
 )
 
-const showProdActions = ({ price }) => (
+const showProdActions = ({ price, _id }, addToCart) => (
   <div className='product_actions'>
     <div className='price'>$ {price}</div>
     <div className='cart'>
       <MyButton
         type='add_to_cart_link'
         runAction={() => {
-          console.log('Add to cart')
+          addToCart(_id)
         }}
       />
     </div>
@@ -74,7 +75,7 @@ const showProdSpecifications = ({ frets, wood }) => (
   </div>
 )
 
-const ProdInfo = ({ prodDetails }) => {
+const ProdInfo = ({ prodDetails, addToCart }) => {
   const { brand, name, description } = prodDetails
   return (
     <div>
@@ -83,7 +84,7 @@ const ProdInfo = ({ prodDetails }) => {
       </h1>
       <p>{description}</p>
       {showProdTags(prodDetails)}
-      {showProdActions(prodDetails)}
+      {showProdActions(prodDetails, addToCart)}
       {showProdSpecifications(prodDetails)}
     </div>
   )

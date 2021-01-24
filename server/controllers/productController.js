@@ -18,7 +18,7 @@ const getProductsByIds = asyncHandler(async (req, res) => {
   let items
   let ids
 
-  if (type == 'array') {
+  if (type === 'array') {
     ids = req.query.id.split(',')
     items = ids.map((item) => {
       return mongoose.Types.ObjectId(item)

@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import { v2 as cloudinary } from 'cloudinary'
+import mongoose from 'mongoose'
 
 // @description   Register a new user
 // @route         POST /api/users/register
@@ -97,6 +98,47 @@ const deleteFromCloudinary = asyncHandler(async (req, res) => {
   res.status(200).send('ok')
 })
 
+const addToUserCart = asyncHandler(async (req, res) => {
+  let user = await User.findOne({ _id: req.user._id })
+  let duplicate = false
+
+  user.cart.forEach((item) => {
+    if (item.id == req.query.productId) {
+      duplicate = true
+    }
+  })
+
+  // console.log(duplicate)
+
+  if (duplicate) {
+    user = await User.findOneAndUpdate(
+      {
+        _id: req.user._id,
+        'cart.id': mongoose.Types.ObjectId(req.query.productId),
+      },
+      {
+        $inc: { 'cart.$.quantity': 1 },
+      },
+      { new: true }
+    )
+  } else {
+    user = await User.findOneAndUpdate(
+      { _id: req.user._id },
+      {
+        $push: {
+          cart: {
+            id: mongoose.Types.ObjectId(req.query.productId),
+            quantity: 1,
+            date: Date.now(),
+          },
+        },
+      },
+      { new: true }
+    )
+  }
+  res.status(200).json(user.cart)
+})
+
 export {
   registerUser,
   loginUser,
@@ -104,4 +146,5 @@ export {
   logoutUser,
   uploadToCloudinary,
   deleteFromCloudinary,
+  addToUserCart,
 }

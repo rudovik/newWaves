@@ -8,6 +8,7 @@ import ProdInfo from './ProdInfo'
 import ProdImg from './ProdImg'
 
 import { useSelector, useDispatch } from 'react-redux'
+import { addToCart } from '../../actions/userActions'
 
 const ProductPage = ({ match }) => {
   const { id } = match.params
@@ -23,7 +24,10 @@ const ProductPage = ({ match }) => {
     }
   }, [dispatch])
 
-  const addToCart = (id) => {}
+  const addToCartHandler = (id) => {
+    dispatch(addToCart(id))
+    // console.log(id)
+  }
 
   return (
     <div>
@@ -37,7 +41,7 @@ const ProductPage = ({ match }) => {
             <div className='right'>
               <ProdInfo
                 prodDetails={prodDetails}
-                addToCart={(id) => addToCart(id)}
+                addToCart={(id) => addToCartHandler(id)}
               />
             </div>
           </div>

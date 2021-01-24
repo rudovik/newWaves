@@ -16,6 +16,8 @@ import {
   USER_LOGOUT_REQUEST,
   USER_LOGOUT_SUCCESS,
   USER_LOGOUT_FAIL,
+  USER_ADD_TO_CART_SUCCESS,
+  USER_ADD_TO_CART_FAIL,
 } from '../constants/userConstants'
 
 export const loginUser = (dataToSubmit) => async (dispatch) => {
@@ -87,6 +89,24 @@ export const logoutUser = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_LOGOUT_FAIL,
+      payload: getErrorPayload(error),
+    })
+  }
+}
+
+export const addToCart = (_id) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(
+      `${USER_SERVER}/addToCart?productId=${_id}`
+    )
+    dispatch({
+      type: USER_ADD_TO_CART_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    console.log(error)
+    dispatch({
+      type: USER_ADD_TO_CART_FAIL,
       payload: getErrorPayload(error),
     })
   }

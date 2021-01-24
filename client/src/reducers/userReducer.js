@@ -12,6 +12,8 @@ import {
   USER_AUTH_FAIL,
   USER_LOGOUT_SUCCESS,
   USER_LOGOUT_REQUEST,
+  USER_ADD_TO_CART_SUCCESS,
+  USER_ADD_TO_CART_FAIL,
 } from '../constants/userConstants'
 
 const userLoginReducer = (
@@ -39,6 +41,11 @@ const userLoginReducer = (
         user,
         authError: false,
         loginError: false,
+      }
+    case USER_ADD_TO_CART_SUCCESS:
+      return {
+        ...state,
+        user: { ...state.user, cart: action.payload },
       }
     case USER_AUTH_FAIL:
       return {
@@ -96,4 +103,15 @@ const userRegisterReducer = (
   }
 }
 
-export { userLoginReducer, userRegisterReducer }
+const userCartReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_ADD_TO_CART_SUCCESS:
+      return { ...state, cart: action.payload }
+    case USER_ADD_TO_CART_FAIL:
+      return { ...state }
+    default:
+      return state
+  }
+}
+
+export { userLoginReducer, userRegisterReducer, userCartReducer }

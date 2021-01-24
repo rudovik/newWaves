@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Carousel, { Modal, ModalGateway } from 'react-images'
 
 const processImages = (images) => {
@@ -9,20 +9,20 @@ const processImages = (images) => {
   return newImages
 }
 
-const gotoPrevious = () => {}
-const gotoNext = () => {}
+// const gotoPrevious = () => {}
+// const gotoNext = () => {}
 
 const ImageLightbox = ({ pos, images, onClose }) => {
-  const [state, setState] = useState({
-    lightboxIsOpen: true,
-    currentIndex: pos,
-    images: processImages(images),
-  })
+  // const [state, setState] = useState({
+  //   lightboxIsOpen: true,
+  //   currentIndex: pos,
+  //   images: processImages(images),
+  // })
   return (
     <ModalGateway>
-      {state.lightboxIsOpen ? (
+      {true ? (
         <Modal onClose={onClose}>
-          <Carousel views={state.images} currentIndex={state.currentIndex} />
+          <Carousel views={processImages(images)} currentIndex={pos} />
         </Modal>
       ) : null}
     </ModalGateway>

@@ -1,5 +1,7 @@
 import React from 'react'
 import MyButton from './Button'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCart } from '../../actions/userActions'
 
 const renderCardImage = (images) => {
   if (images.length > 0) {
@@ -10,6 +12,9 @@ const renderCardImage = (images) => {
 }
 
 const Card = (props) => {
+  const user = useSelector((state) => state.userLogin.user)
+  const dispatch = useDispatch()
+
   return (
     <div className={`card_item_wrapper ${props.grid}`}>
       <div
@@ -46,7 +51,9 @@ const Card = (props) => {
             <MyButton
               type='bag_link'
               runAction={() => {
-                console.log('Added to cart')
+                user
+                  ? dispatch(addToCart(props._id))
+                  : console.log('You need to log in')
               }}
             />
           </div>
