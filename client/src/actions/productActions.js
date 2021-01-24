@@ -12,10 +12,32 @@ import {
   GET_WOODS_FAIL,
   GET_PRODUCTS_TO_SHOP_SUCCESS,
   GET_PRODUCTS_TO_SHOP_FAIL,
+  GET_PRODUCT_DETAILS_SUCCESS,
+  CLEAR_PRODUCT_DETAILS,
   ADD_PRODUCT_SUCCESS,
   CLEAR_PRODUCT,
   ADD_WOOD_SUCCESS,
 } from '../constants/productConstants'
+
+export const getProductDetails = (id) => async (dispatch) => {
+  try {
+    const { data } = await axios.get(
+      `${PRODUCT_SERVER}/articles_by_ids?id=${id}&type=single`
+    )
+
+    dispatch({
+      type: GET_PRODUCT_DETAILS_SUCCESS,
+      payload: data.products[0],
+    })
+  } catch (error) {}
+}
+
+export const clearProductDetails = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_PRODUCT_DETAILS,
+    payload: null,
+  })
+}
 
 export const getProductsBySell = () => async (dispatch) => {
   try {

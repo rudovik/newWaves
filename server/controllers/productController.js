@@ -23,6 +23,8 @@ const getProductsByIds = asyncHandler(async (req, res) => {
     items = ids.map((item) => {
       return mongoose.Types.ObjectId(item)
     })
+  } else if (type === 'single') {
+    items = [mongoose.Types.ObjectId(req.query.id)]
   }
 
   const products = await Product.find({ _id: { $in: items } })
