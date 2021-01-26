@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
+import Product from '../models/productModel.js'
 import { v2 as cloudinary } from 'cloudinary'
 import mongoose from 'mongoose'
 
@@ -139,6 +140,28 @@ const addToUserCart = asyncHandler(async (req, res) => {
   res.status(200).json(user.cart)
 })
 
+const removeFromCart = asyncHandler(async (req, res) => {
+  const { cart } = await User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $pull: { cart: { id: mongoose.Types.ObjectId(req.query._id) } } },
+    { new: true }
+  )
+
+  const cartArray = cart.map((item) => {
+    return mongoose.Types.ObjectId(item.id)
+  })
+
+  const cartDetails = await Product.find({ _id: { $in: cartArray } })
+    .populate('brand')
+    .populate('wood')
+    .exec()
+
+  res.status(200).json({
+    cartDetails,
+    cart,
+  })
+})
+
 export {
   registerUser,
   loginUser,
@@ -147,4 +170,5 @@ export {
   uploadToCloudinary,
   deleteFromCloudinary,
   addToUserCart,
+  removeFromCart,
 }

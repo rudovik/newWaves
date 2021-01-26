@@ -1,6 +1,10 @@
 import axios from 'axios'
 
-import { USER_SERVER, getErrorPayload } from '../components/utils/misc'
+import {
+  USER_SERVER,
+  PRODUCT_SERVER,
+  getErrorPayload,
+} from '../components/utils/misc'
 import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -18,6 +22,10 @@ import {
   USER_LOGOUT_FAIL,
   USER_ADD_TO_CART_SUCCESS,
   USER_ADD_TO_CART_FAIL,
+  USER_GET_CART_ITEMS_SUCCESS,
+  USER_GET_CART_ITEMS_FAIL,
+  USER_REMOVE_CART_ITEM_SUCCESS,
+  USER_REMOVE_CART_ITEM_FAIL,
 } from '../constants/userConstants'
 
 export const loginUser = (dataToSubmit) => async (dispatch) => {
@@ -104,9 +112,61 @@ export const addToCart = (_id) => async (dispatch) => {
       payload: data,
     })
   } catch (error) {
-    console.log(error)
     dispatch({
       type: USER_ADD_TO_CART_FAIL,
+      payload: getErrorPayload(error),
+    })
+  }
+}
+
+export const getCartItems = (cartItems, cart) => async (dispatch) => {
+  try {
+    const { data } = await axios.get(
+      `${PRODUCT_SERVER}/articles_by_ids?id=${cartItems}&type=array`
+    )
+
+    const cartDetails = data.products
+    cart.forEach((item) => {
+      cartDetails.forEach((k, i) => {
+        if (item.id === k._id) {
+          cartDetails[i].quantity = item.quantity
+        }
+      })
+    })
+
+    dispatch({
+      type: USER_GET_CART_ITEMS_SUCCESS,
+      payload: cartDetails,
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_GET_CART_ITEMS_FAIL,
+      payload: getErrorPayload(error),
+    })
+  }
+}
+
+export const removeCartItem = (id) => async (dispatch) => {
+  try {
+    const { data } = await axios(`${USER_SERVER}/removeFromCart?_id=${id}`)
+
+    const { cart, cartDetails } = data
+
+    cart.forEach((item) => {
+      cartDetails.forEach((k, i) => {
+        if (item._id === k._id) {
+          cartDetails[i].quantity = item.quantity
+        }
+      })
+    })
+
+    dispatch({
+      type: USER_REMOVE_CART_ITEM_SUCCESS,
+      payload: { cart, cartDetails },
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_REMOVE_CART_ITEM_FAIL,
       payload: getErrorPayload(error),
     })
   }
