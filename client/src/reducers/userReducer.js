@@ -16,7 +16,8 @@ import {
   USER_ADD_TO_CART_FAIL,
   USER_GET_CART_ITEMS_SUCCESS,
   USER_REMOVE_CART_ITEM_SUCCESS,
-  USER_REMOVE_CART_ITEM_FAIL,
+  /* USER_REMOVE_CART_ITEM_FAIL,*/
+  USER_BUY_SUCCESS,
 } from '../constants/userConstants'
 
 const userLoginReducer = (
@@ -77,6 +78,12 @@ const userLoginReducer = (
         loginError: false,
         loading: false,
       }
+    case USER_BUY_SUCCESS:
+      return {
+        ...state,
+        successBuy: action.payload.success,
+        user: { ...state.user, cart: action.payload.cart },
+      }
     default:
       return state
   }
@@ -125,8 +132,14 @@ const userCartReducer = (state = { cart: [], cartDetails: [] }, action) => {
         cartDetails: action.payload.cartDetails,
         cart: action.payload.cart,
       }
-    case USER_REMOVE_CART_ITEM_FAIL:
-      return console.log(action.payload)
+    case USER_BUY_SUCCESS:
+      return {
+        ...state,
+        cart: action.payload.cart,
+        cartDetails: action.payload.cartDetails,
+      }
+    // case USER_REMOVE_CART_ITEM_FAIL:
+    //   return console.log(action.payload)
     default:
       return state
   }

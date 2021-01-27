@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import Product from '../models/productModel.js'
+import Payment from '../models/paymentModel.js'
 import { v2 as cloudinary } from 'cloudinary'
 import mongoose from 'mongoose'
 
@@ -162,6 +163,58 @@ const removeFromCart = asyncHandler(async (req, res) => {
   })
 })
 
+const successBuy = asyncHandler(async (req, res) => {
+  const history = []
+  const transactionData = {}
+
+  // User history
+  req.body.cartDetails.forEach((item) => {
+    history.push({
+      dateOfPurchase: Date.now(),
+      name: item.name,
+      id: item._id,
+      price: item.price,
+      brand: item.brand.name,
+      quantity: item.quantity,
+      paymentId: req.body.paymentData.id,
+    })
+  })
+
+  // Payments dash
+  transactionData.user = {
+    id: req.user._id,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    email: req.user.email,
+  }
+  transactionData.data = req.body.paymentData
+  transactionData.product = history
+
+  const user = await User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $push: { history: history }, $set: { cart: [] } },
+    { new: true }
+  )
+
+  const payment = new Payment(transactionData)
+  await payment.save()
+
+  const products = []
+  payment.product.forEach(async (item) => {
+    // products.push({id: item.id, quantity: item. quantity})
+    await Product.updateOne(
+      { _id: item.id },
+      { $inc: { sold: item.quantity } },
+      { new: false }
+    )
+  })
+  res.status(200).json({
+    success: true,
+    cart: user.cart,
+    cartDetails: [],
+  })
+})
+
 export {
   registerUser,
   loginUser,
@@ -171,4 +224,5 @@ export {
   deleteFromCloudinary,
   addToUserCart,
   removeFromCart,
+  successBuy,
 }

@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import UserLayout from '../../hoc/UserLayout'
 import { useSelector, useDispatch } from 'react-redux'
-import { getCartItems, removeCartItem } from '../../actions/userActions'
+import {
+  getCartItems,
+  removeCartItem,
+  successBuy,
+} from '../../actions/userActions'
 import ProductsBlock from '../utils/User/ProductsBlock'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrown } from '@fortawesome/free-solid-svg-icons'
 import { faSmile } from '@fortawesome/free-solid-svg-icons'
+
+import PayPal from '../utils/PayPal'
+
+// AY_d6kZY2CCTt5vmp-WeX7nZkipLn7bhXsRAYRrIBMdW7QS-1vMfy_YGasBCSB55zkduSB9d6vQhnFmb
 
 const calculateTotal = (cartDetails) => {
   let total = 0
@@ -65,6 +73,17 @@ const Cart = () => {
   const removeFromCart = (id) => {
     dispatch(removeCartItem(id))
   }
+
+  const transactionError = (data) => {
+    console.log(data)
+  }
+  const transactionCancel = (data) => {
+    console.log('Order canceled: ', data)
+  }
+  const transactionSuccess = (paymentData) => {
+    dispatch(successBuy({ cartDetails, paymentData }))
+    setState({ ...state, showTotal: false, showSuccess: true })
+  }
   return (
     <UserLayout>
       <div>
@@ -90,7 +109,20 @@ const Cart = () => {
           )}
         </div>
         {state.showTotal && (
-          <div className='paypal_button_container'>PayPal</div>
+          <div className='paypal_button_container'>
+            <PayPal
+              toPay={state.total}
+              onError={(data) => {
+                transactionError(data)
+              }}
+              onCancel={(data) => {
+                transactionCancel(data)
+              }}
+              onSuccess={(data) => {
+                transactionSuccess(data)
+              }}
+            />
+          </div>
         )}
       </div>
     </UserLayout>

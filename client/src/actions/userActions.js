@@ -26,6 +26,8 @@ import {
   USER_GET_CART_ITEMS_FAIL,
   USER_REMOVE_CART_ITEM_SUCCESS,
   USER_REMOVE_CART_ITEM_FAIL,
+  USER_BUY_SUCCESS,
+  USER_BUY_FAIL,
 } from '../constants/userConstants'
 
 export const loginUser = (dataToSubmit) => async (dispatch) => {
@@ -167,6 +169,22 @@ export const removeCartItem = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_REMOVE_CART_ITEM_FAIL,
+      payload: getErrorPayload(error),
+    })
+  }
+}
+
+export const successBuy = (productData) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(`${USER_SERVER}/successBuy`, productData)
+
+    dispatch({
+      type: USER_BUY_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_BUY_FAIL,
       payload: getErrorPayload(error),
     })
   }
