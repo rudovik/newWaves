@@ -215,6 +215,17 @@ const successBuy = asyncHandler(async (req, res) => {
   })
 })
 
+const updateProfile = asyncHandler(async (req, res) => {
+  const user = await User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $set: req.body },
+    { new: true }
+  )
+  return res.status(200).send({
+    success: true,
+  })
+})
+
 export {
   registerUser,
   loginUser,
@@ -225,4 +236,5 @@ export {
   addToUserCart,
   removeFromCart,
   successBuy,
+  updateProfile,
 }

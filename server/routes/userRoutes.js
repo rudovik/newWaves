@@ -10,6 +10,7 @@ import {
   addToUserCart,
   removeFromCart,
   successBuy,
+  updateProfile,
 } from '../controllers/userController.js'
 import { auth, admin } from '../middlewares/authMiddlewares.js'
 import formidable from 'express-formidable'
@@ -23,5 +24,6 @@ router.get('/removeimage', auth, admin, deleteFromCloudinary)
 router.post('/addToCart', auth, addToUserCart)
 router.get('/removeFromCart', auth, removeFromCart)
 router.post('/successBuy', auth, successBuy)
+router.post('/update_profile', auth, updateProfile)
 
 export default router

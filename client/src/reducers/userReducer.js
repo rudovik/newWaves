@@ -18,6 +18,9 @@ import {
   USER_REMOVE_CART_ITEM_SUCCESS,
   /* USER_REMOVE_CART_ITEM_FAIL,*/
   USER_BUY_SUCCESS,
+  USER_UPDATE_DATA_SUCCESS,
+  // USER_UDATE_DATA_FAIL,
+  USER_CLEAR_UPDATE_FORM_SUCCESS,
 } from '../constants/userConstants'
 
 const userLoginReducer = (
@@ -42,7 +45,7 @@ const userLoginReducer = (
         ...state,
         loading: false,
         loginSuccess,
-        user,
+        user: { ...user, updateUser: false },
         authError: false,
         loginError: false,
       }
@@ -84,6 +87,10 @@ const userLoginReducer = (
         successBuy: action.payload.success,
         user: { ...state.user, cart: action.payload.cart },
       }
+    case USER_UPDATE_DATA_SUCCESS:
+      return { ...state, updateUser: action.payload }
+    case USER_CLEAR_UPDATE_FORM_SUCCESS:
+      return { ...state, updateUser: action.payload }
     default:
       return state
   }

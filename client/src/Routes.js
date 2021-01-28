@@ -12,6 +12,8 @@ import AddProduct from './components/User/admin/AddProduct'
 import ManageCategories from './components/User/admin/ManageCategories'
 import ProductPage from './components/ProductPage/ProductPage'
 import UserCart from './components/User/Cart'
+import UpdateProfile from './components/User/UpdateProfile'
+import ManageSite from './components/User/admin/ManageSite'
 
 function Routes() {
   return (
@@ -23,6 +25,12 @@ function Routes() {
           component={Auth(UserDashboard, true)}
         />
         <Route
+          path='/user/user_profile'
+          exact
+          component={Auth(UpdateProfile, true)}
+        />
+        <Route path='/user/cart' exact component={Auth(UserCart, true)} />
+        <Route
           path='/admin/add_product'
           exact
           component={Auth(AddProduct, true)}
@@ -32,7 +40,11 @@ function Routes() {
           exact
           component={Auth(ManageCategories, true)}
         />
-        <Route path='/user/cart' exact component={Auth(UserCart, true)} />
+        <Route
+          path='/admin/site_info'
+          exact
+          component={Auth(ManageSite, true)}
+        />
 
         <Route path='/register' exact component={Auth(Register, false)} />
         <Route

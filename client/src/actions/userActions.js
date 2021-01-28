@@ -28,6 +28,9 @@ import {
   USER_REMOVE_CART_ITEM_FAIL,
   USER_BUY_SUCCESS,
   USER_BUY_FAIL,
+  USER_UPDATE_DATA_SUCCESS,
+  USER_UDATE_DATA_FAIL,
+  USER_CLEAR_UPDATE_FORM_SUCCESS,
 } from '../constants/userConstants'
 
 export const loginUser = (dataToSubmit) => async (dispatch) => {
@@ -188,6 +191,32 @@ export const successBuy = (productData) => async (dispatch) => {
       payload: getErrorPayload(error),
     })
   }
+}
+
+export const updateUserData = (dataToSubmit) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(
+      `${USER_SERVER}/update_profile`,
+      dataToSubmit
+    )
+
+    dispatch({
+      type: USER_UPDATE_DATA_SUCCESS,
+      payload: data.success,
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_UDATE_DATA_FAIL,
+      payload: getErrorPayload(error),
+    })
+  }
+}
+
+export const clearUpdateUserForm = () => async (dispatch) => {
+  dispatch({
+    type: USER_CLEAR_UPDATE_FORM_SUCCESS,
+    payload: false,
+  })
 }
 
 export const userLoginFailReset = () => ({ type: USER_LOGIN_FAIL_RESET })
