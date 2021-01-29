@@ -3,6 +3,7 @@ import {} from '../constants/siteConstants'
 import { SITE_SERVER, getErrorPayload } from '../components/utils/misc'
 
 import {
+  SITE_GET_DATA_START,
   SITE_GET_DATA_SUCCESS,
   SITE_GET_DATA_FAIL,
   SITE_UPDATE_DATA_SUCCESS,
@@ -12,6 +13,10 @@ import {
 
 export const getSiteData = () => async (dispatch) => {
   try {
+    dispatch({
+      type: SITE_GET_DATA_START,
+    })
+
     const { data } = await axios.get(`${SITE_SERVER}/site_data`)
 
     dispatch({

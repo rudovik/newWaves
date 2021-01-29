@@ -8,11 +8,12 @@ import { getSiteData } from '../actions/siteActions'
 
 const Layout = ({ children }) => {
   const siteData = useSelector((state) => state.site.siteData[0])
+  const siteDataLoading = useSelector((state) => state.site.loading)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    !siteData && dispatch(getSiteData())
-  }, [siteData, dispatch])
+    !siteData && !siteDataLoading && dispatch(getSiteData())
+  }, [siteData, siteDataLoading, dispatch])
   return (
     <div>
       <Header />

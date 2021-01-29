@@ -6,6 +6,7 @@ import colors from 'colors'
 import connectDB from './config/db.js'
 import bodyParser from 'body-parser'
 import { v2 as cloudinary } from 'cloudinary'
+import mailer from 'nodemailer'
 
 import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
 

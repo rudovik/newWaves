@@ -17,6 +17,7 @@ import {
 const UpdateSiteInfo = () => {
   const siteData = useSelector((state) => state.site.siteData[0])
   const success = useSelector((state) => state.site.success)
+  const siteDataLoading = useSelector((state) => state.site.loading)
   const dispatch = useDispatch()
 
   const [state, setState] = useState({
@@ -115,13 +116,13 @@ const UpdateSiteInfo = () => {
   }
 
   useEffect(() => {
-    !siteData && dispatch(getSiteData())
+    !siteData && !siteDataLoading && dispatch(getSiteData())
     siteData &&
       setState((state) => {
         const newFormData = populateFields(state.formData, siteData)
         return { ...state, formData: newFormData }
       })
-  }, [siteData, dispatch])
+  }, [siteData, siteDataLoading, dispatch])
 
   useEffect(() => {
     if (success) {
