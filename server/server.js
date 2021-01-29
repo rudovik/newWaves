@@ -6,7 +6,6 @@ import colors from 'colors'
 import connectDB from './config/db.js'
 import bodyParser from 'body-parser'
 import { v2 as cloudinary } from 'cloudinary'
-import mailer from 'nodemailer'
 
 import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
 
@@ -15,6 +14,7 @@ import productRoutes from './routes/productRoutes.js'
 import siteRoutes from './routes/siteRoutes.js'
 
 dotenv.config()
+
 connectDB()
 cloudinary.config({
   cloud_name: `${process.env.CLOUD_NAME}`,

@@ -6,7 +6,7 @@ import {
   updateSiteInfo,
 } from '../controllers/siteInfoController.js'
 
-router.get('/site_data', auth, admin, getSiteInfo)
+router.get('/site_data', getSiteInfo)
 router.post('/site_data', auth, admin, updateSiteInfo)
 
 export default router

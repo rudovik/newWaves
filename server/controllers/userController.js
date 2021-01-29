@@ -4,6 +4,7 @@ import Product from '../models/productModel.js'
 import Payment from '../models/paymentModel.js'
 import { v2 as cloudinary } from 'cloudinary'
 import mongoose from 'mongoose'
+import { sendEmail } from '../utils/mail/mail.js'
 
 // @description   Register a new user
 // @route         POST /api/users/register
@@ -19,6 +20,8 @@ const registerUser = asyncHandler(async (req, res) => {
   })
 
   res.status(200).json({ registerSuccess: true })
+
+  sendEmail({ to: email, name, token: null, type: 'welcome' })
 })
 
 // @description   Login a user

@@ -138,7 +138,7 @@ const Register = () => {
                     change={(element) => updateForm(element)}
                   />
                 </div>
-                <div className='lastname'>
+                <div className='block'>
                   <FormField
                     id={'lastname'}
                     fieldData={form.formData.lastname}
@@ -162,7 +162,7 @@ const Register = () => {
                     change={(element) => updateForm(element)}
                   />
                 </div>
-                <div className='lastname'>
+                <div className='block'>
                   <FormField
                     id={'confirmPassword'}
                     fieldData={form.formData.confirmPassword}
