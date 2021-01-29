@@ -5,7 +5,7 @@ import { faPhone } from '@fortawesome/free-solid-svg-icons'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
-const Footer = () => {
+const Footer = ({ siteData: { address, hours, phone, email } = {} }) => {
   return (
     <footer className='bck_b_dark'>
       <div className='container'>
@@ -18,7 +18,7 @@ const Footer = () => {
                 <FontAwesomeIcon icon={faCompass} className='icon' />
                 <div className='nfo'>
                   <div>Address</div>
-                  <div>Rudo 1234</div>
+                  <div>{address}</div>
                 </div>
               </div>
 
@@ -26,7 +26,7 @@ const Footer = () => {
                 <FontAwesomeIcon icon={faPhone} className='icon' />
                 <div className='nfo'>
                   <div>Phone</div>
-                  <div>1234-56789</div>
+                  <div>{phone}</div>
                 </div>
               </div>
 
@@ -34,7 +34,7 @@ const Footer = () => {
                 <FontAwesomeIcon icon={faClock} className='icon' />
                 <div className='nfo'>
                   <div>Working hours</div>
-                  <div>Mon-Sun/ 9am-8pm</div>
+                  <div>{hours}</div>
                 </div>
               </div>
 
@@ -42,7 +42,7 @@ const Footer = () => {
                 <FontAwesomeIcon icon={faEnvelope} className='icon' />
                 <div className='nfo'>
                   <div>Email</div>
-                  <div>rudo@ukr.net</div>
+                  <div>{email}</div>
                 </div>
               </div>
             </div>

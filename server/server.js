@@ -11,6 +11,7 @@ import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
 
 import userRoutes from './routes/userRoutes.js'
 import productRoutes from './routes/productRoutes.js'
+import siteRoutes from './routes/siteRoutes.js'
 
 dotenv.config()
 connectDB()
@@ -32,6 +33,7 @@ app.use(cookieParser())
 
 app.use('/api/users', userRoutes)
 app.use('/api/products', productRoutes)
+app.use('/api/site', siteRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
