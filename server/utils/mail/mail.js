@@ -8,7 +8,7 @@ const getEmailData = ({ to, name, token, type }) => {
     case 'welcome':
       template = {
         from: `Waves <${process.env.ADMIN_EMAIL}>`,
-        to: 'tupo',
+        to,
         subject: `Welcome to waves, ${name}`,
         html: welcome(),
       }
