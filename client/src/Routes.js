@@ -14,6 +14,7 @@ import ProductPage from './components/ProductPage/ProductPage'
 import UserCart from './components/User/Cart'
 import UpdateProfile from './components/User/UpdateProfile'
 import ManageSite from './components/User/admin/ManageSite'
+import PageNotFound from './components/utils/PageNotFound'
 
 function Routes() {
   return (
@@ -60,6 +61,7 @@ function Routes() {
         />
         <Route path='/shop' exact component={Auth(Shop, null)} />
         <Route path='/' exact component={Auth(Home, null)} />
+        <Route exact component={Auth(PageNotFound, null)} />
       </Switch>
     </Layout>
   )
