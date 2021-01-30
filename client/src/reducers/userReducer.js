@@ -88,7 +88,11 @@ const userLoginReducer = (
       return {
         ...state,
         successBuy: action.payload.success,
-        user: { ...state.user, cart: action.payload.cart },
+        user: {
+          ...state.user,
+          cart: action.payload.cart,
+          history: action.payload.history,
+        },
       }
     case USER_UPDATE_DATA_SUCCESS:
       return { ...state, updateUser: action.payload }

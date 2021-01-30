@@ -17,7 +17,7 @@ const UserDashboard = ({ user: { name, lastname, email, history } }) => {
           <MyButton
             type='default'
             title='Edit account info'
-            linkTo='user/user_profile'
+            linkTo='/user/user_profile'
           />
         </div>
         {history && (

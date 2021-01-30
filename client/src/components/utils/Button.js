@@ -12,7 +12,6 @@ const makeButton = ({
   runAction,
 }) => {
   let template = ''
-
   switch (type) {
     case 'default':
       template = (

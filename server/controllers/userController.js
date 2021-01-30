@@ -233,6 +233,7 @@ const successBuy = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     cart: user.cart,
+    history: user.history,
     cartDetails: [],
   })
 })

@@ -40,7 +40,7 @@ const Cart = () => {
   const dispatch = useDispatch()
 
   const [state, setState] = useState({
-    loading: true,
+    loading: false,
     total: 0,
     showTotal: false,
     showSuccess: false,
@@ -72,7 +72,6 @@ const Cart = () => {
       setState((state) => ({
         ...state,
         showTotal: false,
-        loading: false,
       }))
   }, [cartDetails])
 
@@ -97,10 +96,15 @@ const Cart = () => {
     setState({ ...state, showTotal: false, showSuccess: true })
   }
 
+  console.log(state.loading)
+
   return (
     <UserLayout>
       <div>
         <h1>My cart</h1>
+        {state.loading ? (
+          <CircularProgress style={{ color: '#2196F3' }} thickness={3} />
+        ) : null}
         <div className='user_cart'>
           {cartDetails.length ? (
             <ProductsBlock
@@ -109,9 +113,6 @@ const Cart = () => {
               removeItem={(id) => removeFromCart(id)}
             />
           ) : null}
-          {state.loading && (
-            <CircularProgress style={{ color: '#2196F3' }} thickness={3} />
-          )}
           {state.showTotal ? (
             <div className='user_cart_sum'>
               <div>Total amount: $ {state.total}</div>
