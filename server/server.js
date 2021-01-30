@@ -13,6 +13,14 @@ import userRoutes from './routes/userRoutes.js'
 import productRoutes from './routes/productRoutes.js'
 import siteRoutes from './routes/siteRoutes.js'
 
+// import SHA1 from 'crypto-js/sha1.js'
+
+// const date = new Date()
+// const po = `PO-${date.getSeconds()}${date.getMilliseconds()}-${SHA1('user_id')
+//   .toString()
+//   .substring(0, 8)}`
+// console.log(po)
+
 dotenv.config()
 
 connectDB()

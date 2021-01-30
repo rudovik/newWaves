@@ -31,6 +31,8 @@ import {
   USER_UPDATE_DATA_SUCCESS,
   USER_UDATE_DATA_FAIL,
   USER_CLEAR_UPDATE_FORM_SUCCESS,
+  USER_CLEAR_CART_DETAILS,
+  USER_REGISTER_SUCCESS_RESET,
 } from '../constants/userConstants'
 
 export const loginUser = (dataToSubmit) => async (dispatch) => {
@@ -66,6 +68,12 @@ export const registerUser = (dataToSubmit) => async (dispatch) => {
       payload: getErrorPayload(error),
     })
   }
+}
+
+export const userRegisterSuccessReset = () => async (dispatch) => {
+  dispatch({
+    type: USER_REGISTER_SUCCESS_RESET,
+  })
 }
 
 export const authUser = () => async (dispatch) => {
@@ -149,6 +157,10 @@ export const getCartItems = (cartItems, cart) => async (dispatch) => {
       payload: getErrorPayload(error),
     })
   }
+}
+
+export const clearCartDetails = () => async (dispatch) => {
+  dispatch({ type: USER_CLEAR_CART_DETAILS })
 }
 
 export const removeCartItem = (id) => async (dispatch) => {

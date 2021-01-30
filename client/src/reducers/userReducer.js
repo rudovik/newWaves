@@ -12,6 +12,7 @@ import {
   USER_AUTH_FAIL,
   USER_LOGOUT_SUCCESS,
   USER_LOGOUT_REQUEST,
+  // USER_LOGOUT_FAIL,
   USER_ADD_TO_CART_SUCCESS,
   USER_ADD_TO_CART_FAIL,
   USER_GET_CART_ITEMS_SUCCESS,
@@ -21,6 +22,8 @@ import {
   USER_UPDATE_DATA_SUCCESS,
   // USER_UDATE_DATA_FAIL,
   USER_CLEAR_UPDATE_FORM_SUCCESS,
+  USER_CLEAR_CART_DETAILS,
+  USER_REGISTER_SUCCESS_RESET,
 } from '../constants/userConstants'
 
 const userLoginReducer = (
@@ -109,6 +112,8 @@ const userRegisterReducer = (
         registerSuccess: action.payload,
         error: false,
       }
+    case USER_REGISTER_SUCCESS_RESET:
+      return { ...state, registerSuccess: false }
     case USER_REGISTER_FAIL:
       return {
         loading: false,
@@ -133,6 +138,8 @@ const userCartReducer = (state = { cart: [], cartDetails: [] }, action) => {
       return { ...state }
     case USER_GET_CART_ITEMS_SUCCESS:
       return { ...state, cartDetails: action.payload }
+    case USER_CLEAR_CART_DETAILS:
+      return { ...state, cartDetails: [] }
     case USER_REMOVE_CART_ITEM_SUCCESS:
       return {
         ...state,

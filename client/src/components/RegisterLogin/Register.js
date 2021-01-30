@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import FormField from '../utils/Form/FormField'
 import { update, generateData, checkForm } from '../utils/Form/formActions'
-import { registerUser, userRegisterFailReset } from '../../actions/userActions'
+import {
+  registerUser,
+  userRegisterFailReset,
+  userRegisterSuccessReset,
+} from '../../actions/userActions'
 import { useHistory } from 'react-router-dom'
 
 import Dialog from '@material-ui/core/Dialog'
@@ -116,12 +120,14 @@ const Register = () => {
 
   const history = useHistory()
   useEffect(() => {
-    registerSuccess &&
-      (setForm((form) => ({ ...form, formSuccess: true })) ||
-        setTimeout(() => {
-          history.push('register_login')
-        }, 3000))
-  }, [registerSuccess, history])
+    if (registerSuccess) {
+      setForm((form) => ({ ...form, formSuccess: true }))
+      setTimeout(() => {
+        history.push('register_login')
+      }, 3000)
+      dispatch(userRegisterSuccessReset())
+    }
+  }, [registerSuccess, history, dispatch])
 
   return (
     <div className='page_wrapper'>

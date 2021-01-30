@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import UserLayout from '../../hoc/UserLayout'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getCartItems,
   removeCartItem,
   successBuy,
+  clearCartDetails,
 } from '../../actions/userActions'
 import ProductsBlock from '../utils/User/ProductsBlock'
 
@@ -51,6 +53,10 @@ const Cart = () => {
         cartItems.push(item.id)
       })
       dispatch(getCartItems(cartItems, cart))
+      setState((state) => ({
+        ...state,
+        loading: true,
+      }))
     }
   }, [cart, dispatch])
 
@@ -70,6 +76,12 @@ const Cart = () => {
       }))
   }, [cartDetails])
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearCartDetails())
+    }
+  }, [dispatch])
+
   const removeFromCart = (id) => {
     dispatch(removeCartItem(id))
   }
@@ -84,16 +96,22 @@ const Cart = () => {
     dispatch(successBuy({ cartDetails, paymentData }))
     setState({ ...state, showTotal: false, showSuccess: true })
   }
+
   return (
     <UserLayout>
       <div>
         <h1>My cart</h1>
         <div className='user_cart'>
-          <ProductsBlock
-            products={cartDetails}
-            type='cart'
-            removeItem={(id) => removeFromCart(id)}
-          />
+          {cartDetails.length ? (
+            <ProductsBlock
+              products={cartDetails}
+              type='cart'
+              removeItem={(id) => removeFromCart(id)}
+            />
+          ) : null}
+          {state.loading && (
+            <CircularProgress style={{ color: '#2196F3' }} thickness={3} />
+          )}
           {state.showTotal ? (
             <div className='user_cart_sum'>
               <div>Total amount: $ {state.total}</div>

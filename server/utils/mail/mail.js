@@ -1,7 +1,8 @@
 import mailer from 'nodemailer'
 import welcome from './welcome_template.js'
+import purchase from './purchase_template.js'
 
-const getEmailData = ({ to, name, token, type }) => {
+const getEmailData = ({ to, name, token, type, transactionData }) => {
   let template = null
 
   switch (type) {
@@ -13,6 +14,14 @@ const getEmailData = ({ to, name, token, type }) => {
         html: welcome(),
       }
       break
+    case 'purchase':
+      template = {
+        from: `Waves <${process.env.ADMIN_EMAIL}>`,
+        to,
+        subject: `Thanks for shopping with us, ${name}`,
+        html: purchase(transactionData),
+      }
+      break
     default:
       template
   }
@@ -20,7 +29,13 @@ const getEmailData = ({ to, name, token, type }) => {
   return template
 }
 
-export const sendEmail = async ({ to, name, token, type }) => {
+export const sendEmail = async ({
+  to,
+  name,
+  token,
+  type,
+  transactionData = null,
+}) => {
   try {
     const smtpTransport = mailer.createTransport({
       host: `${process.env.POST_SERVICE_HOST}`,
@@ -32,7 +47,7 @@ export const sendEmail = async ({ to, name, token, type }) => {
       },
     })
 
-    const mail = getEmailData({ to, name, token, type })
+    const mail = getEmailData({ to, name, token, type, transactionData })
 
     const info = await smtpTransport.sendMail(mail)
     smtpTransport.close()

@@ -5,6 +5,7 @@ import Payment from '../models/paymentModel.js'
 import { v2 as cloudinary } from 'cloudinary'
 import mongoose from 'mongoose'
 import { sendEmail } from '../utils/mail/mail.js'
+import SHA1 from 'crypto-js/sha1.js'
 
 // @description   Register a new user
 // @route         POST /api/users/register
@@ -170,9 +171,17 @@ const successBuy = asyncHandler(async (req, res) => {
   const history = []
   const transactionData = {}
 
+  const date = new Date()
+  const po = `PO-${date.getSeconds()}${date.getMilliseconds()}-${SHA1(
+    req.user._id
+  )
+    .toString()
+    .substring(0, 8)}`
+
   // User history
   req.body.cartDetails.forEach((item) => {
     history.push({
+      pOrder: po,
       dateOfPurchase: Date.now(),
       name: item.name,
       id: item._id,
@@ -190,7 +199,10 @@ const successBuy = asyncHandler(async (req, res) => {
     lastname: req.user.lastname,
     email: req.user.email,
   }
-  transactionData.data = req.body.paymentData
+  transactionData.data = {
+    ...req.body.paymentData,
+    pOrder: po,
+  }
   transactionData.product = history
 
   const user = await User.findOneAndUpdate(
@@ -210,6 +222,13 @@ const successBuy = asyncHandler(async (req, res) => {
       { $inc: { sold: item.quantity } },
       { new: false }
     )
+  })
+  sendEmail({
+    to: user.email,
+    name: user.name,
+    token: null,
+    type: 'purchase',
+    transactionData,
   })
   res.status(200).json({
     success: true,
