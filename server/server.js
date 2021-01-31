@@ -15,14 +15,6 @@ import siteRoutes from './routes/siteRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
 import downloadRoutes from './routes/downloadRoutes.js'
 
-// import SHA1 from 'crypto-js/sha1.js'
-
-// const date = new Date()
-// const po = `PO-${date.getSeconds()}${date.getMilliseconds()}-${SHA1('user_id')
-//   .toString()
-//   .substring(0, 8)}`
-// console.log(po)
-
 dotenv.config()
 
 connectDB()
@@ -47,6 +39,9 @@ app.use('/api/products', productRoutes)
 app.use('/api/site', siteRoutes)
 app.use('/api/users/uploadfile', uploadRoutes)
 app.use('/api/users/admin_files', downloadRoutes)
+app.use('*', (req, res) => {
+  res.status(200).json({ message: 'Hello!' })
+})
 
 app.use(notFound)
 app.use(errorHandler)
