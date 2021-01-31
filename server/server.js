@@ -12,6 +12,8 @@ import { notFound, errorHandler } from './middlewares/errorMiddlewares.js'
 import userRoutes from './routes/userRoutes.js'
 import productRoutes from './routes/productRoutes.js'
 import siteRoutes from './routes/siteRoutes.js'
+import uploadRoutes from './routes/uploadRoutes.js'
+import downloadRoutes from './routes/downloadRoutes.js'
 
 // import SHA1 from 'crypto-js/sha1.js'
 
@@ -43,6 +45,8 @@ app.use(cookieParser())
 app.use('/api/users', userRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/site', siteRoutes)
+app.use('/api/users/uploadfile', uploadRoutes)
+app.use('/api/users/admin_files', downloadRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

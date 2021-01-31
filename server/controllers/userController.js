@@ -6,6 +6,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import mongoose from 'mongoose'
 import { sendEmail } from '../utils/mail/mail.js'
 import SHA1 from 'crypto-js/sha1.js'
+import path from 'path'
 
 // @description   Register a new user
 // @route         POST /api/users/register
@@ -249,6 +250,11 @@ const updateProfile = asyncHandler(async (req, res) => {
   })
 })
 
+const downloadFile = asyncHandler(async (req, res) => {
+  const file = path.resolve('.') + `/uploads/${req.params.id}`
+  res.download(file)
+})
+
 export {
   registerUser,
   loginUser,
@@ -260,4 +266,5 @@ export {
   removeFromCart,
   successBuy,
   updateProfile,
+  downloadFile,
 }

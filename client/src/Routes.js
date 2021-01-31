@@ -1,5 +1,6 @@
 import { Switch, Route } from 'react-router-dom'
 
+// import axios from 'axios'
 import Home from './components/Home/Home'
 import Layout from './hoc/Layout'
 import RegisterLogin from './components/RegisterLogin/RegisterLogin'
@@ -15,6 +16,7 @@ import UserCart from './components/User/Cart'
 import UpdateProfile from './components/User/UpdateProfile'
 import ManageSite from './components/User/admin/ManageSite'
 import PageNotFound from './components/utils/PageNotFound'
+import AddFile from './components/User/admin/AddFile'
 
 function Routes() {
   return (
@@ -46,6 +48,12 @@ function Routes() {
           exact
           component={Auth(ManageSite, true)}
         />
+        <Route path='/admin/add_file' exact component={Auth(AddFile, true)} />
+        {/* <Route
+          exact
+          path='/api/users/download/:id'
+          component={Auth(AddFile, true)}
+        /> */}
 
         <Route path='/register' exact component={Auth(Register, false)} />
         <Route
@@ -61,7 +69,7 @@ function Routes() {
         />
         <Route path='/shop' exact component={Auth(Shop, null)} />
         <Route path='/' exact component={Auth(Home, null)} />
-        <Route exact component={Auth(PageNotFound, null)} />
+        <Route component={Auth(PageNotFound, null)} />
       </Switch>
     </Layout>
   )
