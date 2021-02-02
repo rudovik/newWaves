@@ -1,6 +1,7 @@
 import mailer from 'nodemailer'
 import welcome from './welcome_template.js'
 import purchase from './purchase_template.js'
+import resetPassword from './reset_password_template.js'
 
 const getEmailData = ({ to, name, token, type, transactionData }) => {
   let template = null
@@ -20,6 +21,14 @@ const getEmailData = ({ to, name, token, type, transactionData }) => {
         to,
         subject: `Thanks for shopping with us, ${name}`,
         html: purchase(transactionData),
+      }
+      break
+    case 'reset_password':
+      template = {
+        from: `Waves <${process.env.ADMIN_EMAIL}>`,
+        to,
+        subject: `Hey, ${name}, reset your password.`,
+        html: resetPassword(transactionData),
       }
       break
     default:
@@ -53,5 +62,6 @@ export const sendEmail = async ({
     smtpTransport.close()
   } catch (error) {
     console.error(`Email Sending Error: ${error.message}`.red.underline.bold)
+    throw error
   }
 }

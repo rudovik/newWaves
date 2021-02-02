@@ -93,6 +93,12 @@ const Login = () => {
           </div>
         )}
         <button onClick={(event) => submitForm(event)}>Log In</button>
+        <button
+          style={{ marginLeft: '10px' }}
+          onClick={() => history.push('/reset_user')}
+        >
+          Forgot my password
+        </button>
       </form>
     </div>
   )

@@ -2,9 +2,12 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import { promisify } from 'util'
 import jwt from 'jsonwebtoken'
+import crypto from 'crypto'
+import moment from 'moment'
 
 const sign = promisify(jwt.sign)
 const verify = promisify(jwt.verify)
+const randomBytes = promisify(crypto.randomBytes)
 
 const userSchema = mongoose.Schema({
   email: {
@@ -43,6 +46,12 @@ const userSchema = mongoose.Schema({
   token: {
     type: String,
   },
+  resetToken: {
+    type: String,
+  },
+  resetTokenExp: {
+    type: Number,
+  },
 })
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
@@ -52,6 +61,17 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 userSchema.methods.generateToken = async function () {
   const token = await sign(this._id.toHexString(), process.env.JWT_SECRET)
   this.token = token
+  await this.save()
+}
+
+userSchema.methods.generateResetToken = async function () {
+  const buffer = await randomBytes(20)
+  const token = buffer.toString('hex')
+  const today = moment().startOf('day').valueOf()
+  var tomorrow = moment(today).endOf('day').valueOf()
+
+  this.resetToken = token
+  this.resetTokenExp = tomorrow
   await this.save()
 }
 

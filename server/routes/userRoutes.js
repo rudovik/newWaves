@@ -12,6 +12,8 @@ import {
   successBuy,
   updateProfile,
   downloadFile,
+  resetUser,
+  resetPassword,
 } from '../controllers/userController.js'
 import { auth, admin } from '../middlewares/authMiddlewares.js'
 import formidable from 'express-formidable'
@@ -27,5 +29,7 @@ router.get('/removeFromCart', auth, removeFromCart)
 router.post('/successBuy', auth, successBuy)
 router.post('/update_profile', auth, updateProfile)
 router.get('/download/:id', auth, admin, downloadFile)
+router.post('/reset_user', resetUser)
+router.post('/reset_password', resetPassword)
 
 export default router

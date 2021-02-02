@@ -12,6 +12,9 @@ import UserDashboard from './components/User/UserDashboard'
 import AddProduct from './components/User/admin/AddProduct'
 import ManageCategories from './components/User/admin/ManageCategories'
 import ProductPage from './components/ProductPage/ProductPage'
+import ResetUser from './components/ResetUser/ResetUser'
+import ResetPassword from './components/ResetUser/ResetPassword'
+
 import UserCart from './components/User/Cart'
 import UpdateProfile from './components/User/UpdateProfile'
 import ManageSite from './components/User/admin/ManageSite'
@@ -60,6 +63,12 @@ function Routes() {
           path='/register_login'
           exact
           component={Auth(RegisterLogin, false)}
+        />
+        <Route path='/reset_user' exact component={Auth(ResetUser, false)} />
+        <Route
+          path='/reset_password/:token'
+          exact
+          component={Auth(ResetPassword, false)}
         />
 
         <Route

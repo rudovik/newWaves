@@ -7,6 +7,7 @@ import mongoose from 'mongoose'
 import { sendEmail } from '../utils/mail/mail.js'
 import SHA1 from 'crypto-js/sha1.js'
 import path from 'path'
+import moment from 'moment'
 
 // @description   Register a new user
 // @route         POST /api/users/register
@@ -255,6 +256,50 @@ const downloadFile = asyncHandler(async (req, res) => {
   res.download(file)
 })
 
+const resetUser = asyncHandler(async (req, res) => {
+  const user = await User.findOne({
+    email: req.body.email,
+  })
+
+  await user.generateResetToken()
+  await sendEmail({
+    to: user.email,
+    name: user.name,
+    token: null,
+    type: 'reset_password',
+    transactionData: user,
+  })
+
+  return res.status(200).json({ success: true })
+})
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const today = moment().startOf('day').valueOf()
+
+  const user = await User.findOne({
+    resetToken: req.body.resetToken,
+    resetTokenExp: {
+      $gte: today,
+    },
+  })
+
+  if (!user)
+    return res.json({
+      success: false,
+      message: 'Sorry, token is bad, generate a new one.',
+    })
+
+  user.password = req.body.password
+  user.resetToken = ''
+  user.resetTokenExp = ''
+
+  await user.save()
+
+  return res.status(200).json({
+    success: true,
+  })
+})
+
 export {
   registerUser,
   loginUser,
@@ -267,4 +312,6 @@ export {
   successBuy,
   updateProfile,
   downloadFile,
+  resetUser,
+  resetPassword,
 }

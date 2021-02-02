@@ -31,6 +31,7 @@ export const update = (element, formData, formName) => {
   }
 
   newElement.value = element.event.target.value
+  newElement.validationMessage = ''
 
   if (element.blur || element.id === 'password') {
     let validData = validate(newElement, formData)
